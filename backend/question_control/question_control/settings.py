@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'question_control.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'quesion',
+        'NAME': 'question',
         'USER': 'db_user',
         'PASSWORD': 'db_password',
         'HOST': '127.0.0.1',
