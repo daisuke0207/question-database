@@ -26,6 +26,7 @@ class AnswerFavorite(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     like = models.BooleanField(
         verbose_name='いいね',
+        default=False
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
