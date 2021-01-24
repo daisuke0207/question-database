@@ -39,5 +39,5 @@ class AnswerFavoriteSerializer(serializers.ModelSerializer):
     updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M", read_only=True)
 
     class Meta:
-        model = Answer
+        model = AnswerFavorite
         fields = ('id', 'like', 'created_at', 'updated_at')
