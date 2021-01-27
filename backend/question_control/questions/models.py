@@ -22,7 +22,7 @@ class Answer(models.Model):
     def __str__(self) -> str:
         return self.answer_text[:200]
 
-class AnswerFavorite(models.Model):
+class AnswerLike(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     like = models.BooleanField(
         verbose_name='いいね',

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Question, Answer, AnswerFavorite
+from .models import Question, Answer, AnswerLike
 from rest_framework.authtoken.models import Token
 
 class UserSerializer(serializers.ModelSerializer):
@@ -31,13 +31,13 @@ class AnswerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Answer
-        fields = ('id', 'answer_text', 'created_at', 'updated_at')
+        fields = ('id', 'answer_text', 'created_at', 'updated_at', 'question')
 
-class AnswerFavoriteSerializer(serializers.ModelSerializer):
+class AnswerLikeSerializer(serializers.ModelSerializer):
 
     created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M", read_only=True)
     updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M", read_only=True)
 
     class Meta:
-        model = AnswerFavorite
-        fields = ('id', 'like', 'created_at', 'updated_at')
+        model = AnswerLike
+        fields = ('id', 'like', 'created_at', 'updated_at', 'answer')
