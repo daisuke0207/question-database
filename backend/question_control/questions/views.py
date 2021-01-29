@@ -16,6 +16,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = (ProfilePermission,)
 
+
 class ManageUserViewSet(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
     authentication_classes = (TokenAuthentication,)
@@ -24,17 +25,17 @@ class ManageUserViewSet(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
+
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = (IsAuthenticated,)
+
 
 class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
-    permission_classes = (IsAuthenticated,)
+
 
 class AnswerLikeViewSet(viewsets.ModelViewSet):
     queryset = AnswerLike.objects.all()
     serializer_class = AnswerLikeSerializer
-    permission_classes = (IsAuthenticated,)
