@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import axios from 'axios'
+import axios from '../axios'
 
 const QuestionAppAPI: React.FC = () => {
 
@@ -7,10 +7,10 @@ const QuestionAppAPI: React.FC = () => {
   const [answers, setAnswers] = useState<any[]>([])
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/question/questions/')
+    axios.get('/question/questions/')
       .then(res => {setQuestions(res.data)})
     
-    axios.get('http://127.0.0.1:8000/question/answers/')
+    axios.get('/question/answers/')
       .then(res => {setAnswers(res.data)})
   }, [])
 
