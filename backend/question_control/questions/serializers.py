@@ -26,7 +26,8 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ('id', 'question_text', 'created_at', 'updated_at', 'owner')
+        fields = ('id', 'question_text', 'created_at', 'updated_at')
+        extra_kwargs = {'owner': {'read_only': True}}
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -39,7 +40,8 @@ class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = ('id', 'answer_text', 'created_at',
-                  'updated_at', 'question', 'owner')
+                  'updated_at', 'question')
+        extra_kwargs = {'owner': {'read_only': True}}
 
 
 class AnswerLikeSerializer(serializers.ModelSerializer):
@@ -51,4 +53,5 @@ class AnswerLikeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AnswerLike
-        fields = ('id', 'like', 'created_at', 'updated_at', 'answer', 'owner')
+        fields = ('id', 'like', 'created_at', 'updated_at', 'answer')
+        extra_kwargs = {'owner': {'read_only': True}}
