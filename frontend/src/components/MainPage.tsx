@@ -1,10 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import axios from '../const/axios'
 
-const QuestionAppAPI: React.FC = () => {
+
+const MainPage: React.FC = () => {
 
   const [questions, setQuestions] = useState<any[]>([])
   const [answers, setAnswers] = useState<any[]>([])
+
+  const Logout = () => {
+    localStorage.removeItem("token")
+  }
 
   useEffect(() => {
     axios.get('/question/questions/')
@@ -29,9 +34,10 @@ const QuestionAppAPI: React.FC = () => {
             answers.map(answer => <li key={answer.id}>{answer.id}: {answer.answer_text} ({answer.created_at})</li>)
           }
         </ul>
+        <button onClick={Logout}>ログアウト</button>
       </div>
     </>
   )
 }
 
-export default QuestionAppAPI
+export default MainPage

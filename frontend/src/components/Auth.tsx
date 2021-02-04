@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
 import { asyncLogin, asyncRegister } from '../api/UserAPI'
 
-const Login: React.FC = () => {
+
+const Auth: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true)
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
@@ -65,4 +66,4 @@ const Login: React.FC = () => {
   )
 }
 
-export default Login
+export default Auth
