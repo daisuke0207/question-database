@@ -1,18 +1,19 @@
 import React from 'react'
-import Login from './components/Login'
-import QuestionAppAPI from './components/QuestionAppApi'
+import { Route, BrowserRouter, Switch } from 'react-router-dom'
+import Auth from './components/Auth'
+import MainPage from './components/MainPage'
+
 
 const App: React.FC = () => {
 
-  const Logout = () => {
-    localStorage.removeItem("token")
-  }
-
   return (
     <div>
-      <QuestionAppAPI />
-      <Login />
-      <button onClick={Logout}>ログアウト</button>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={Auth} />
+          <Route exact path="/question" component={MainPage} />
+        </Switch>
+      </BrowserRouter>
     </div>
   )
 }
