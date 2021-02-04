@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 
-from rest_framework import generics
-from rest_framework import viewsets
+from rest_framework import generics, viewsets, permissions
 
 from .models import Question, Answer, AnswerLike
 from .serializers import UserSerializer, QuestionSerializer, AnswerSerializer, AnswerLikeSerializer
@@ -14,8 +13,9 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (ProfilePermission,)
 
 
-class ManageUserViewSet(generics.RetrieveUpdateAPIView):
+class ProfileUserViewSet(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self):
         return self.request.user

@@ -4,9 +4,8 @@ from django.conf.urls import include
 from rest_framework import routers
 
 from questions.views import(
-    ManageUserViewSet,
     UserViewSet,
-    ManageUserViewSet,
+    ProfileUserViewSet,
     QuestionViewSet,
     AnswerViewSet,
     AnswerLikeViewSet,
@@ -20,6 +19,6 @@ router.register('answerlike', AnswerLikeViewSet)
 
 
 urlpatterns = [
-    path('myself/', ManageUserViewSet.as_view(), name='myself'),
+    path('profile/', ProfileUserViewSet.as_view(), name='profile'),
     path('', include(router.urls)),
 ]
