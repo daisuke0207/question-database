@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
+import { useHistory } from "react-router-dom";
 import { asyncLogin, asyncRegister } from '../api/UserAPI'
 
 
 const Auth: React.FC = () => {
+  const history = useHistory()
   const [isLogin, setIsLogin] = useState(true)
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
@@ -27,6 +29,7 @@ const Auth: React.FC = () => {
   const login = async () => {
     const result = await asyncLogin({ username: username, password: password })
     localStorage.setItem("token", result.token)
+    history.push("/question");
   }
 
   const changeFunc = () => {
