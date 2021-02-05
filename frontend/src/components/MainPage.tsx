@@ -1,17 +1,34 @@
 import React, {useState, useEffect} from 'react'
+import { useHistory } from "react-router-dom";
+import { asyncGetProfile } from '../api/UserAPI';
 import axios from '../const/axios'
 
 
 const MainPage: React.FC = () => {
 
+  type PROFILE = {
+    id: number;
+    username: string;
+    email: string;
+  }
+
+  const history = useHistory()
+  const [profile, setProfile] = useState<PROFILE>()
   const [questions, setQuestions] = useState<any[]>([])
   const [answers, setAnswers] = useState<any[]>([])
 
-  const Logout = () => {
+  const logout = () => {
     localStorage.removeItem("token")
+    history.push("/")
+  }
+
+  const userProfile = async () => {
+    const result = await asyncGetProfile()
+    setProfile(result)
   }
 
   useEffect(() => {
+    userProfile()
     axios.get('/question/questions/')
       .then(res => {setQuestions(res.data)})
     
@@ -22,6 +39,7 @@ const MainPage: React.FC = () => {
   return (
     <>
       <div>
+        {profile !== undefined ? <div>{profile.id} : {profile.username}</div> : "未ログイン"}
         <h2>質問一覧</h2>
         <ul>
           {
@@ -34,7 +52,10 @@ const MainPage: React.FC = () => {
             answers.map(answer => <li key={answer.id}>{answer.id}: {answer.answer_text} ({answer.created_at})</li>)
           }
         </ul>
-        <button onClick={Logout}>ログアウト</button>
+        { profile !== undefined ?
+          <button onClick={logout}>ログアウト</button> :
+          <button onClick={() => history.push("/")}>ログイン</button>
+        }
       </div>
     </>
   )
