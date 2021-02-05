@@ -18,6 +18,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+    owner_name = serializers.ReadOnlyField(
+        source='owner.username', read_only=True)
 
     created_at = serializers.DateTimeField(
         format="%Y-%m-%d %H:%M", read_only=True)
@@ -26,11 +28,14 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ('id', 'question_text', 'created_at', 'updated_at')
+        fields = ('id', 'question_text', 'created_at',
+                  'updated_at', 'owner', 'owner_name')
         extra_kwargs = {'owner': {'read_only': True}}
 
 
 class AnswerSerializer(serializers.ModelSerializer):
+    owner_name = serializers.ReadOnlyField(
+        source='owner.username', read_only=True)
 
     created_at = serializers.DateTimeField(
         format="%Y-%m-%d %H:%M", read_only=True)
@@ -40,11 +45,13 @@ class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = ('id', 'answer_text', 'created_at',
-                  'updated_at', 'question')
+                  'updated_at', 'question', 'owner', 'owner_name')
         extra_kwargs = {'owner': {'read_only': True}}
 
 
 class AnswerLikeSerializer(serializers.ModelSerializer):
+    owner_name = serializers.ReadOnlyField(
+        source='owner.username', read_only=True)
 
     created_at = serializers.DateTimeField(
         format="%Y-%m-%d %H:%M", read_only=True)
@@ -53,5 +60,6 @@ class AnswerLikeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AnswerLike
-        fields = ('id', 'like', 'created_at', 'updated_at', 'answer')
+        fields = ('id', 'like', 'created_at', 'updated_at',
+                  'answer', 'owner', 'owner_name')
         extra_kwargs = {'owner': {'read_only': True}}
