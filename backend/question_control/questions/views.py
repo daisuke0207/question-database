@@ -26,14 +26,23 @@ class QuestionViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionSerializer
     permissions_classes = (IsOwnerOrReadOnly,)
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
     permissions_classes = (IsOwnerOrReadOnly,)
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class AnswerLikeViewSet(viewsets.ModelViewSet):
     queryset = AnswerLike.objects.all()
     serializer_class = AnswerLikeSerializer
     permissions_classes = (IsOwnerOrReadOnly,)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
