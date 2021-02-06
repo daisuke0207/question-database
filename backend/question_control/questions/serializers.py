@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from rest_framework.fields import SerializerMethodField
 from .models import Question, Answer, AnswerLike
 from rest_framework.authtoken.models import Token
 
@@ -15,6 +16,23 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         Token.objects.create(user=user)
         return user
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    questions = SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'questions']
+
+    def get_questions(self, obj):
+        try:
+            question_contents = QuestionSerializer(Question.objects.all().filter(
+                owner=User.objects.get(id=obj.id)), many=True).data
+            return question_contents
+        except:
+            question_contents = None
+            return question_contents
 
 
 class QuestionSerializer(serializers.ModelSerializer):
