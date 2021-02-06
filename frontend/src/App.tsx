@@ -7,7 +7,14 @@ import { UserContext }  from './contexts/UserContext'
 
 
 const App: React.FC = () => {
-  const [profile, setProfile] = useState<any>()
+  interface USER_PROFILE {
+    id: number;
+    username: string;
+    email: string;
+    questions: {id: number; question_text: string; owner: number; owner_name: string; created_at: number; updated_at: number;}
+  }
+
+  const [profile, setProfile] = useState<USER_PROFILE>()
 
   const userProfile = async () => {
     const result = await asyncGetProfile()

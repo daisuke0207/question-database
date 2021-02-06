@@ -1,7 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { asyncCreateQuestion, asyncGetQuestions } from '../api/QuestionAPI'
+import { UserContext }  from '../contexts/UserContext'
 
 const Question: React.FC = () => {
+  interface QUESTION {
+    id: number; question_text: string; owner: number; owner_name: string; created_at: number; updated_at: number;
+  }
+
+  const profile = useContext(UserContext)
+  const myQuestions: QUESTION[] = profile?.questions
   const [questions, setQuestions] = useState<any[]>([])
   const [questionText, setQuestionText] = useState("")
 
@@ -37,6 +44,13 @@ const Question: React.FC = () => {
           questions.map(question => <li key={question.id}>{question.owner_name}: {question.question_text} ({question.created_at})</li>)
         }
       </ul>
+      <h4>投稿</h4>
+      {
+        profile !== undefined ?
+        <div>
+          {myQuestions.map(question=> <li key={question.id}>{question.question_text}</li>)}
+        </div> : "まだ投稿はありません。"
+      }
     </div>
   )
 }

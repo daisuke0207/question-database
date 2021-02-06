@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.db.models import Prefetch
 
 from rest_framework import generics, viewsets, permissions
 
