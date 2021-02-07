@@ -18,7 +18,7 @@ const MainPage: React.FC = () => {
         <div>
           {profile !== null ? <div>{profile.id} : {profile.username}</div> : "未ログイン"}
           <Question />
-          { profile !== undefined ?
+          { profile !== null ?
             <button onClick={logout}>ログアウト</button> :
             <button onClick={() => history.push("/")}>ログイン</button>
           }

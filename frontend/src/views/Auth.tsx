@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useHistory } from "react-router-dom";
 import { asyncLogin, asyncRegister } from '../api/UserAPI'
 
@@ -42,6 +42,15 @@ const Auth: React.FC = () => {
     setEmail("")
     setPassword("")
   }
+
+  const redirect = () => {
+    history.push("/question")
+  }
+
+  useEffect(() => {
+    const auth: string | null = localStorage.getItem('token')
+    if (auth) {redirect()}
+  })
 
   return (
     <div>

@@ -9,7 +9,6 @@ const Question: React.FC = () => {
   }
 
   const profile = useContext(UserContext)
-  // const myQuestions = profile?.questions
   const [questions, setQuestions] = useState<QUESTION[]>([])
   const [questionText, setQuestionText] = useState("")
   const [editQuestion, setEditQuestion] = useState("")
