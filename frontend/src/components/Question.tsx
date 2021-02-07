@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { asyncCreateQuestion, asyncGetQuestions } from '../api/QuestionAPI'
 import { UserContext }  from '../contexts/UserContext'
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+
 
 const Question: React.FC = () => {
   interface QUESTION {
@@ -8,9 +10,10 @@ const Question: React.FC = () => {
   }
 
   const profile = useContext(UserContext)
-  const myQuestions: QUESTION[] = profile?.questions
-  const [questions, setQuestions] = useState<any[]>([])
+  const myQuestions = profile?.questions
+  const [questions, setQuestions] = useState<QUESTION[]>([])
   const [questionText, setQuestionText] = useState("")
+  const [editQuestion, setEditQuestion] = useState(false)
 
   const getQuestions = async () => {
     const result = await asyncGetQuestions()
@@ -46,9 +49,14 @@ const Question: React.FC = () => {
       </ul>
       <h4>投稿</h4>
       {
-        profile !== undefined ?
+        myQuestions !== undefined ?
         <div>
-          {myQuestions.map(question=> <li key={question.id}>{question.question_text}</li>)}
+          {myQuestions.map(question=>
+            <>
+              <li key={question.id}>{question.question_text}</li>
+              <EditOutlinedIcon onClick={() => setEditQuestion(true)}/>
+            </>
+          )}
         </div> : "まだ投稿はありません。"
       }
     </div>

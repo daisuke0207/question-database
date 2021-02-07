@@ -16,7 +16,7 @@ const MainPage: React.FC = () => {
   return (
       <>
         <div>
-          {profile !== undefined ? <div>{profile.id} : {profile.username}</div> : "未ログイン"}
+          {profile !== null ? <div>{profile.id} : {profile.username}</div> : "未ログイン"}
           <Question />
           { profile !== undefined ?
             <button onClick={logout}>ログアウト</button> :

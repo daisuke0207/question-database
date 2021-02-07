@@ -11,13 +11,13 @@ const App: React.FC = () => {
     id: number;
     username: string;
     email: string;
-    questions: {id: number; question_text: string; owner: number; owner_name: string; created_at: number; updated_at: number;}
+    questions: [{id: number; question_text: string; owner: number; owner_name: string; created_at: number; updated_at: number;}]
   }
 
   const [profile, setProfile] = useState<USER_PROFILE>()
 
   const userProfile = async () => {
-    const result = await asyncGetProfile()
+    const result: USER_PROFILE = await asyncGetProfile()
     setProfile(result)
   }
 
@@ -26,7 +26,7 @@ const App: React.FC = () => {
   }, [])
 
   return (
-    <UserContext.Provider value={profile}>
+    <UserContext.Provider value={profile ? profile : null}>
       <div>
         <BrowserRouter>
           <Switch>
