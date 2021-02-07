@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import Auth from './views/Auth'
-import MainPage from './views/TopPage'
+import TopPage from './views/TopPage'
 import { asyncGetProfile } from './api/UserAPI'
 import { UserContext }  from './contexts/UserContext'
 
@@ -31,7 +31,7 @@ const App: React.FC = () => {
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={Auth} />
-            <Route exact path="/question" component={MainPage} />
+            <Route exact path="/question" component={TopPage} />
           </Switch>
         </BrowserRouter>
       </div>
