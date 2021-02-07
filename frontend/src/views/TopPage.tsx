@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useHistory } from "react-router-dom";
-import Question from './Question';
+import Question from '../components/Question';
 import { UserContext } from '../contexts/UserContext'
 
 const MainPage: React.FC = () => {
