@@ -23,3 +23,12 @@ export const asyncPatchQuestion = async (question: {id:  number, question_text: 
   })
   return res.data
 }
+
+export const asyncDeleteQuestion = async (id :number) => {
+  await axios.delete(`/question/questions/${id}/`, {
+    headers: {
+      Authorization: `token ${localStorage.token}`
+    }
+  })
+  return id
+}

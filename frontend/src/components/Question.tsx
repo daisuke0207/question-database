@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { asyncCreateQuestion, asyncGetQuestions, asyncPatchQuestion } from '../api/QuestionAPI'
+import { asyncCreateQuestion, asyncGetQuestions, asyncPatchQuestion, asyncDeleteQuestion } from '../api/QuestionAPI'
 import { UserContext }  from '../contexts/UserContext'
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const Question: React.FC = () => {
   interface QUESTION {
@@ -32,6 +33,10 @@ const Question: React.FC = () => {
     setGetId(0)
   }
 
+  const deleteQuestion = async (id: number) => {
+    await asyncDeleteQuestion(id)
+  }
+
   useEffect(() => {
     getQuestions()
   }, [getId])
@@ -59,18 +64,17 @@ const Question: React.FC = () => {
         <div>
           {profile.questions.map(question=>
             <ul key={question.id}>
-              <li key={question.id}>{question.question_text}</li>
-              <li><EditOutlinedIcon onClick={() => {setGetId(question.id); setEditQuestion(question.question_text);}}/>
               {getId === question.id ?
                 <form onSubmit={updateQuestion} key={getId}>
                   <div>
-                    <label>質問文（編集）: </label>
                     <input type="text" value={editQuestion} onChange={(e) => setEditQuestion(e.target.value)} />
                   </div>
                   <button type="submit">更新</button>
-                </form>: null
+                </form>
+                :  <li key={question.id}>{question.question_text}</li>
               }
-              </li>
+              <li><EditOutlinedIcon onClick={() => {setGetId(question.id); setEditQuestion(question.question_text);}}/></li>
+              <li><DeleteIcon onClick={() => deleteQuestion(question.id)}/></li>
             </ul>
           )}
         </div> : "まだ投稿はありません。"
