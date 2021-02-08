@@ -34,7 +34,7 @@ const Question: React.FC = () => {
 
   useEffect(() => {
     getQuestions()
-  }, [])
+  }, [getId])
 
   return (
     <div>
@@ -58,19 +58,20 @@ const Question: React.FC = () => {
         profile !== null ?
         <div>
           {profile.questions.map(question=>
-            <>
+            <ul key={question.id}>
               <li key={question.id}>{question.question_text}</li>
-              <EditOutlinedIcon onClick={() => {setGetId(question.id); setEditQuestion(question.question_text);}}/>
+              <li><EditOutlinedIcon onClick={() => {setGetId(question.id); setEditQuestion(question.question_text);}}/>
               {getId === question.id ?
-                <form onSubmit={updateQuestion}>
+                <form onSubmit={updateQuestion} key={getId}>
                   <div>
                     <label>質問文（編集）: </label>
                     <input type="text" value={editQuestion} onChange={(e) => setEditQuestion(e.target.value)} />
                   </div>
                   <button type="submit">更新</button>
-                </form> : null
+                </form>: null
               }
-            </>
+              </li>
+            </ul>
           )}
         </div> : "まだ投稿はありません。"
       }
