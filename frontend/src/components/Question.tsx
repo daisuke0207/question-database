@@ -1,23 +1,36 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { asyncCreateQuestion, asyncGetQuestions, asyncPatchQuestion, asyncDeleteQuestion } from '../api/QuestionAPI'
-import { UserContext }  from '../contexts/UserContext'
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { asyncGetProfile } from '../api/UserAPI'
 
 const Question: React.FC = () => {
   interface QUESTION {
     id: number; question_text: string; owner: number; owner_name: string; created_at: number; updated_at: number;
   }
 
-  const profile = useContext(UserContext)
+  interface USER_PROFILE {
+    id: number;
+    username: string;
+    email: string;
+    questions: [{id: number; question_text: string; owner: number; owner_name: string; created_at: number; updated_at: number;}]
+  }
+
   const [questions, setQuestions] = useState<QUESTION[]>([])
+  const [myQuestions, setMyQuestions] = useState<USER_PROFILE | null>()
   const [questionText, setQuestionText] = useState("")
   const [editQuestion, setEditQuestion] = useState("")
-  const [getId, setGetId] = useState(0)
+  const [editId, setEditId] = useState(0)
+  const [deleteId, setDeleteId] = useState(0)
 
   const getQuestions = async () => {
     const result = await asyncGetQuestions()
     setQuestions(result)
+   }
+
+   const getMyQuestions = async () => {
+     const result = await asyncGetProfile()
+     setMyQuestions(result)
    }
 
   const postQuestion = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,18 +41,20 @@ const Question: React.FC = () => {
 
   const updateQuestion = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    await asyncPatchQuestion({id: getId ,question_text: editQuestion})
+    await asyncPatchQuestion({id: editId ,question_text: editQuestion})
     setEditQuestion("")
-    setGetId(0)
+    setEditId(0)
   }
 
   const deleteQuestion = async (id: number) => {
     await asyncDeleteQuestion(id)
+    setDeleteId(id)
   }
 
   useEffect(() => {
     getQuestions()
-  }, [getId])
+    getMyQuestions()
+  }, [editId, deleteId, questionText])
 
   return (
     <div>
@@ -60,12 +75,12 @@ const Question: React.FC = () => {
       </ul>
       <h4>投稿</h4>
       {
-        profile !== null ?
+        myQuestions !== null ?
         <div>
-          {profile.questions.map(question=>
+          {myQuestions?.questions.map(question=>
             <ul key={question.id}>
-              {getId === question.id ?
-                <form onSubmit={updateQuestion} key={getId}>
+              {editId === question.id ?
+                <form onSubmit={updateQuestion} key={editId}>
                   <div>
                     <input type="text" value={editQuestion} onChange={(e) => setEditQuestion(e.target.value)} />
                   </div>
@@ -73,7 +88,7 @@ const Question: React.FC = () => {
                 </form>
                 :  <li key={question.id}>{question.question_text}</li>
               }
-              <li><EditOutlinedIcon onClick={() => {setGetId(question.id); setEditQuestion(question.question_text);}}/></li>
+              <li><EditOutlinedIcon onClick={() => {setEditId(question.id); setEditQuestion(question.question_text);}}/></li>
               <li><DeleteIcon onClick={() => deleteQuestion(question.id)}/></li>
             </ul>
           )}
