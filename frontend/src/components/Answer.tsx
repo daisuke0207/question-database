@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { asyncGetAnswers, asyncPatchAnswer } from '../api/AnswerAPI'
+import { asyncGetAnswers, asyncPatchAnswer, asyncDeleteAnswer, asyncCreateAnswer } from '../api/AnswerAPI'
 import { asyncGetProfile } from '../api/UserAPI'
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 
 const Answer: React.FC = () => {
@@ -20,6 +22,8 @@ const Answer: React.FC = () => {
   const [myAnswers, setMyAnswers] = useState<USER_PROFILE | null>()
   const [editAnswer, setEditAnswer] = useState('')
   const [editId, setEditId] = useState(0)
+  const [deleteId, setDeleteId] = useState(0)
+
 
   const getAnswers = async () => {
     const result = await asyncGetAnswers()
@@ -38,10 +42,15 @@ const Answer: React.FC = () => {
     setEditAnswer('')
   }
 
+  const deleteAnswer = async (id: number) => {
+    await asyncDeleteAnswer(id)
+    setDeleteId(id)
+  }
+
   useEffect(() => {
     getAnswers()
     getMyAnswers()
-  }, [editId])
+  }, [editId, deleteId])
 
   return (
     <div>
@@ -64,6 +73,8 @@ const Answer: React.FC = () => {
                 :  <li key={answer.id}>{answer.answer_text}</li>
               }
               <li><EditOutlinedIcon onClick={() => {setEditId(answer.id); setEditAnswer(answer.answer_text);}}/></li>
+              <li><DeleteIcon onClick={() => deleteAnswer(answer.id)}/></li>
+
             </ul>
           )}
         </div> : "まだ投稿はありません。"
