@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 
-from rest_framework import generics, viewsets, permissions
+from rest_framework import generics, viewsets, permissions, status
+from rest_framework.response import Response
 
 from .models import Question, Answer, AnswerLike
 from .serializers import UserSerializer, UserProfileSerializer, QuestionSerializer, AnswerSerializer, AnswerLikeSerializer
@@ -19,6 +20,10 @@ class ProfileUserViewSet(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+    def put(self, request, *args, **kwargs):
+        response = {'message': 'PUT method is not allowed'}
+        return Response(response, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
