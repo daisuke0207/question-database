@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { asyncGetAnswers, asyncPatchAnswer, asyncDeleteAnswer, asyncCreateAnswer } from '../api/AnswerAPI'
-import { asyncGetProfile } from '../api/UserAPI'
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { UserContext } from '../contexts/UserContext'
 
 
 
@@ -11,28 +11,19 @@ const Answer: React.FC = () => {
     id: number; answer_text: string; question: number; owner: number; owner_name: string; created_at: number; updated_at: number;
   }
 
-  interface USER_PROFILE {
-    id: number;
-    username: string;
-    email: string;
-    answers: [{id: number; answer_text: string; question: number; owner: number; owner_name: string; created_at: number; updated_at: number;}]
-  }
-
+  const profile = useContext(UserContext)
   const [answers, setAnswers] = useState<ANSWER[]>([])
-  const [myAnswers, setMyAnswers] = useState<USER_PROFILE | null>()
+  const [myAnswers, setMyAnswers] = useState<ANSWER[]>([])
   const [editAnswer, setEditAnswer] = useState('')
   const [editId, setEditId] = useState(0)
   const [deleteId, setDeleteId] = useState(0)
 
 
   const getAnswers = async () => {
-    const result = await asyncGetAnswers()
+    const result: ANSWER[] = await asyncGetAnswers()
+    const tmp: ANSWER[] = result.filter(q => q.id === profile?.id)
     setAnswers(result)
-  }
-
-  const getMyAnswers = async () => {
-    const result = await asyncGetProfile()
-    setMyAnswers(result)
+    setMyAnswers(tmp)
   }
 
   const updateAnswer = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -49,8 +40,7 @@ const Answer: React.FC = () => {
 
   useEffect(() => {
     getAnswers()
-    getMyAnswers()
-  }, [editId, deleteId])
+  }, [editId, deleteId, profile])
 
   return (
     <div>
@@ -61,7 +51,7 @@ const Answer: React.FC = () => {
       {
         myAnswers !== null ?
         <div>
-          {myAnswers?.answers.map(answer=>
+          {myAnswers.map(answer=>
             <ul key={answer.id}>
               {editId === answer.id ?
                 <form onSubmit={updateAnswer} key={editId}>

@@ -20,30 +20,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    questions = SerializerMethodField()
-    answers = SerializerMethodField()
-
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'questions', 'answers']
-
-    def get_questions(self, obj):
-        try:
-            question_contents = QuestionSerializer(Question.objects.all().filter(
-                owner=User.objects.get(id=obj.id)), many=True).data
-            return question_contents
-        except:
-            question_contents = None
-            return question_contents
-
-    def get_answers(self, obj):
-        try:
-            question_contents = AnswerSerializer(Answer.objects.all().filter(
-                owner=User.objects.get(id=obj.id)), many=True).data
-            return question_contents
-        except:
-            question_contents = None
-            return question_contents
+        fields = ['id', 'username', 'email']
 
     def update(self, request, *args, **kwargs):
         response = {'message': 'PUT method is not allowed'}
