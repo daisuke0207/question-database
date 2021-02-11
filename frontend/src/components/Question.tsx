@@ -1,36 +1,28 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { asyncCreateQuestion, asyncGetQuestions, asyncPatchQuestion, asyncDeleteQuestion } from '../api/QuestionAPI'
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { asyncGetProfile } from '../api/UserAPI'
+import { UserContext } from '../contexts/UserContext'
+
 
 const Question: React.FC = () => {
   interface QUESTION {
     id: number; question_text: string; owner: number; owner_name: string; created_at: number; updated_at: number;
   }
 
-  interface USER_PROFILE {
-    id: number;
-    username: string;
-    email: string;
-    questions: [{id: number; question_text: string; owner: number; owner_name: string; created_at: number; updated_at: number;}]
-  }
-
+  const profile = useContext(UserContext)
   const [questions, setQuestions] = useState<QUESTION[]>([])
-  const [myQuestions, setMyQuestions] = useState<USER_PROFILE | null>()
+  const [myQuestions, setMyQuestions] = useState<QUESTION[]>([])
   const [questionText, setQuestionText] = useState("")
   const [editQuestion, setEditQuestion] = useState("")
   const [editId, setEditId] = useState(0)
   const [deleteId, setDeleteId] = useState(0)
 
   const getQuestions = async () => {
-    const result = await asyncGetQuestions()
+    const result: QUESTION[] = await asyncGetQuestions()
+    const tmp: QUESTION[] = result.filter(q => q.owner === profile?.id)
     setQuestions(result)
-   }
-
-   const getMyQuestions = async () => {
-     const result = await asyncGetProfile()
-     setMyQuestions(result)
+    setMyQuestions(tmp)
    }
 
   const postQuestion = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,8 +45,7 @@ const Question: React.FC = () => {
 
   useEffect(() => {
     getQuestions()
-    getMyQuestions()
-  }, [editId, deleteId, questionText])
+  }, [editId, deleteId, questionText, profile])
 
   return (
     <div>
@@ -77,7 +68,7 @@ const Question: React.FC = () => {
       {
         myQuestions !== null ?
         <div>
-          {myQuestions?.questions.map(question=>
+          {myQuestions.map(question=>
             <ul key={question.id}>
               {editId === question.id ?
                 <form onSubmit={updateQuestion} key={editId}>
