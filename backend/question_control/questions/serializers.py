@@ -1,9 +1,7 @@
-from rest_framework import serializers, status
+from rest_framework import serializers
 from django.contrib.auth.models import User
-from rest_framework.fields import SerializerMethodField
 from .models import Question, Answer, AnswerLike
 from rest_framework.authtoken.models import Token
-from rest_framework.response import Response
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -23,10 +21,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email']
-
-    def update(self, request, *args, **kwargs):
-        response = {'message': 'PUT method is not allowed'}
-        return Response(response, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class QuestionSerializer(serializers.ModelSerializer):
