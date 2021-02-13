@@ -16,19 +16,22 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='answer',
             name='owner',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='auth.user'),
+            field=models.ForeignKey(
+                default=1, on_delete=django.db.models.deletion.CASCADE, to='auth.user'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='answerlike',
             name='owner',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='auth.user'),
+            field=models.ForeignKey(
+                default=1, on_delete=django.db.models.deletion.CASCADE, to='auth.user'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='question',
             name='owner',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='auth.user'),
+            field=models.ForeignKey(
+                default=1, on_delete=django.db.models.deletion.CASCADE, to='auth.user'),
             preserve_default=False,
         ),
     ]

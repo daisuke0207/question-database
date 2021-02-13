@@ -67,6 +67,5 @@ class AnswerLikeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AnswerLike
-        fields = ('id', 'like', 'created_at', 'updated_at',
-                  'answer', 'owner', 'owner_name')
+        fields = ('id', 'created_at', 'answer', 'owner', 'owner_name')
         extra_kwargs = {'owner': {'read_only': True}}
