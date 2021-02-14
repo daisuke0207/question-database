@@ -36,6 +36,13 @@ const Question: React.FC = () => {
     setAnswers(result)
   }
 
+  const check_answer_id = (questionId: number, answerId: number) => {
+    if (questionId === answerId){
+      return true
+    }
+    return false
+  }
+
   const postQuestion = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await asyncCreateQuestion({question_text: questionText})
@@ -73,7 +80,22 @@ const Question: React.FC = () => {
       <h4>質問一覧</h4>
       <div>
         {
+          questions.map(question =>
+          <ul key={question.id}>
+            <li key={question.id}>{question.owner_name}: {question.question_text} ({question.created_at})</li>
+            <div>
+              {answers.map(answer => 
+                check_answer_id(question.id, answer.question) ?
+                <div key={answer.id}>
+                  <li key={answer.id}>回答 : {answer.owner_name}: {answer.answer_text}</li>
+                </div>
+                : null
+              )}
+            </div>
+          </ul>
+          )
         }
+      </div>
       <h4>投稿</h4>
       {
         myQuestions !== null ?
