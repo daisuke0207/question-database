@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { asyncCreateQuestion, asyncGetQuestions, asyncPatchQuestion, asyncDeleteQuestion } from '../api/QuestionAPI'
+import { asyncGetAnswers } from '../api/AnswerAPI'
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { UserContext } from '../contexts/UserContext'
@@ -10,9 +11,14 @@ const Question: React.FC = () => {
     id: number; question_text: string; owner: number; owner_name: string; created_at: number; updated_at: number;
   }
 
+  interface ANSWER {
+    id: number; answer_text: string; question: number; owner: number; owner_name: string; created_at: number; updated_at: number;
+  }
+
   const profile = useContext(UserContext)
   const [questions, setQuestions] = useState<QUESTION[]>([])
   const [myQuestions, setMyQuestions] = useState<QUESTION[]>([])
+  const [answers, setAnswers] = useState<ANSWER[]>([])
   const [questionText, setQuestionText] = useState("")
   const [editQuestion, setEditQuestion] = useState("")
   const [editId, setEditId] = useState(0)
@@ -25,6 +31,11 @@ const Question: React.FC = () => {
     setMyQuestions(tmp)
    }
 
+   const getAnswers = async () => {
+    const result: ANSWER[] = await asyncGetAnswers()
+    setAnswers(result)
+  }
+
   const postQuestion = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await asyncCreateQuestion({question_text: questionText})
@@ -33,7 +44,7 @@ const Question: React.FC = () => {
 
   const updateQuestion = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    await asyncPatchQuestion({id: editId ,question_text: editQuestion})
+    await asyncPatchQuestion({id: editId, question_text: editQuestion})
     setEditQuestion("")
     setEditId(0)
   }
@@ -45,6 +56,7 @@ const Question: React.FC = () => {
 
   useEffect(() => {
     getQuestions()
+    getAnswers()
   }, [editId, deleteId, questionText, profile])
 
   return (
@@ -59,11 +71,9 @@ const Question: React.FC = () => {
         <button type="submit">投稿</button>
       </form>
       <h4>質問一覧</h4>
-      <ul>
+      <div>
         {
-          questions.map(question => <li key={question.id}>{question.owner_name}: {question.question_text} ({question.created_at})</li>)
         }
-      </ul>
       <h4>投稿</h4>
       {
         myQuestions !== null ?
