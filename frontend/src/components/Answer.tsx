@@ -49,7 +49,7 @@ const Answer: React.FC = () => {
       { answers.map(answer => <li key={answer.id}>回答: {answer.answer_text}({answer.owner_name})</li>)}
       <h4>投稿</h4>
       {
-        myAnswers !== null ?
+        myAnswers !== undefined ?
         <div>
           {myAnswers.map(answer=>
             <ul key={answer.id}>

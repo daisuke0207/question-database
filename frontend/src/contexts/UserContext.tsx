@@ -6,4 +6,4 @@ interface USER_PROFILE {
   email: string;
 }
 
-export const UserContext = createContext<USER_PROFILE | null>({id: 0, username: '', email: ''})
+export const UserContext = createContext<USER_PROFILE | undefined>({id: 0, username: '', email: ''})

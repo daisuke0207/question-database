@@ -25,7 +25,7 @@ const App: React.FC = () => {
   }, [])
 
   return (
-    <UserContext.Provider value={profile ? profile : null}>
+    <UserContext.Provider value={profile ? profile : undefined}>
       <div>
         <BrowserRouter>
           <Switch>

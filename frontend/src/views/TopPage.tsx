@@ -17,7 +17,7 @@ const MainPage: React.FC = () => {
   return (
       <>
         <div>
-          {profile !== null ? <div>{profile.id} : {profile.username}</div> : "未ログイン"}
+          {profile !== undefined ? <div>{profile.id} : {profile.username}</div> : "未ログイン"}
           <Question />
           <span>--------------------------------------------------</span>
           <Answer />
