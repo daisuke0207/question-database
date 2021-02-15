@@ -120,11 +120,11 @@ const Question: React.FC = () => {
                         <EditOutlinedIcon onClick={() => {setAnswerEditId(answer.id); setEditAnswer(answer.answer_text);}}/>
                         <DeleteIcon onClick={() => deleteAnswer(answer.id)}/>
                       </div>
-                      : null
+                      : undified
                     }
                   </li>
                 </div>
-                : null
+                : undified
               )}
             </div>
           </ul>
@@ -133,7 +133,7 @@ const Question: React.FC = () => {
       </div>
       <h4>投稿</h4>
       {
-        myQuestions !== null ?
+        myQuestions !== undefined ?
         <div>
           {myQuestions.map(question=>
             <ul key={question.id}>
