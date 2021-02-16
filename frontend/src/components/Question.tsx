@@ -120,11 +120,11 @@ const Question: React.FC = () => {
                         <EditOutlinedIcon onClick={() => {setAnswerEditId(answer.id); setEditAnswer(answer.answer_text);}}/>
                         <DeleteIcon onClick={() => deleteAnswer(answer.id)}/>
                       </div>
-                      : undified
+                      : undefined
                     }
                   </li>
                 </div>
-                : undified
+                : undefined
               )}
             </div>
           </ul>
