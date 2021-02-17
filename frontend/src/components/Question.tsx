@@ -5,6 +5,9 @@ import { UserContext } from '../contexts/UserContext'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -12,6 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       backgroundColor: '#323232',
       height: '100vh',
+      width: '100%',
     },
     paper: {
       padding: theme.spacing(2),
@@ -19,10 +23,11 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'center',
       color: theme.palette.text.secondary,
       height: '100px',
-      width: '300px',
+      width: '1fr',
     },
   }),
 );
+
 
 const Question: React.FC = () => {
   interface QUESTION {
@@ -104,9 +109,9 @@ const Question: React.FC = () => {
   }, [questionEditId, questionDeleteId, questionText, profile, answerDeleteId, answerEditId, answerText])
 
   return (
-    <Grid container className={classes.root}>
+    <Grid container justify="center" className={classes.root}>
       <Grid item xs={12}>
-        <Grid container justify="center" spacing={2}>
+        <Grid container spacing={2}>
         {
           questions.map(question =>
             <Grid key={question.id} item xs={4}>
