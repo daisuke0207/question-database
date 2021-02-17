@@ -2,23 +2,29 @@ import React, { useContext } from 'react'
 import { useHistory } from "react-router-dom";
 import Question from '../components/Question';
 import { UserContext } from '../contexts/UserContext'
-// import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
+import styled from 'styled-components'
 
-// const StyledButton = styled(Button)`
-//   background-color: #6772e5;
-//   color: #fff;
-//   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-//   padding: 7px 14px;
-//   &:hover {
-//     background-color: #5469d4;
-//   }
-// `;
 
-// const TopPageHeader = styled.header`
-//   backgroud-color: #000
-//   color: #fff
-// `
+const TopPageHeader = styled.header`
+  background-color: #323232;
+  color: #fff;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const Username = styled.div`
+  color: #fff;
+  padding: 10px;
+  margin-right: 100px;
+`
+
+const LogoutButton = styled.div`
+  color: #fff;
+  padding: 10px;
+  margin-left: 100px;
+`
 
 const MainPage: React.FC = () => {
 
@@ -33,13 +39,14 @@ const MainPage: React.FC = () => {
   return (
       <>
         <div>
-          <header>
-            {profile !== undefined ? <div>{profile.id} : {profile.username}</div> : "未ログイン"}
+          <TopPageHeader>
+            {profile !== undefined ? <Username>{profile.username}</Username> : "未ログイン"}
+            <h1>QA Database</h1>
             { profile !== null ?
-            <button onClick={logout}>ログアウト</button> :
+            <LogoutButton onClick={logout}>ログアウト</LogoutButton> :
             <button onClick={() => history.push("/")}>ログイン</button>
             }
-          </header>
+          </TopPageHeader>
           <Question />
         </div>
       </>
