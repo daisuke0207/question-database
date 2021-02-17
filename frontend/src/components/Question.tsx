@@ -1,10 +1,28 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { asyncCreateQuestion, asyncGetQuestions, asyncPatchQuestion, asyncDeleteQuestion } from '../api/QuestionAPI'
 import { asyncGetAnswers, asyncDeleteAnswer, asyncPatchAnswer } from '../api/AnswerAPI'
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { UserContext } from '../contexts/UserContext'
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+      backgroundColor: '#323232',
+      height: '100vh',
+    },
+    paper: {
+      padding: theme.spacing(2),
+      margin: '100px 3vw 10px',
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+      height: '100px',
+      width: '300px',
+    },
+  }),
+);
 
 const Question: React.FC = () => {
   interface QUESTION {
@@ -15,6 +33,7 @@ const Question: React.FC = () => {
     id: number; answer_text: string; question: number; owner: number; owner_name: string; created_at: number; updated_at: number;
   }
 
+  const classes = useStyles();
   const profile = useContext(UserContext)
   const [questions, setQuestions] = useState<QUESTION[]>([])
   const [myQuestions, setMyQuestions] = useState<QUESTION[]>([])
@@ -85,74 +104,23 @@ const Question: React.FC = () => {
   }, [questionEditId, questionDeleteId, questionText, profile, answerDeleteId, answerEditId, answerText])
 
   return (
-    <div>
-      <h3>Question</h3>
-      <h4>質問フォーム</h4>
-      <form onSubmit={postQuestion}>
-        <div>
-          <label>質問文: </label>
-          <input type="text" value={questionText} onChange={(e) => setQuestionText(e.target.value)} />
-        </div>
-        <button type="submit">投稿</button>
-      </form>
-      <h4>質問一覧</h4>
-      <div>
+    <Grid container className={classes.root}>
+      <Grid item xs={12}>
+        <Grid container justify="center" spacing={2}>
         {
           questions.map(question =>
-          <ul key={question.id}>
-            <li key={question.id}>{question.owner_name}: {question.question_text} ({question.created_at})</li>
-            <div>
-              {answers.map(answer => 
-                check_match_qa_id(question.id, answer.question) ?
-                <div key={answer.id}>
-                  {answerEditId === answer.id ?
-                    <form onSubmit={updateAnswer} key={answerEditId}>
-                      <div>
-                        <input type="text" value={editAnswer} onChange={(e) => setEditAnswer(e.target.value)} />
-                      </div>
-                      <button type="submit">更新</button>
-                    </form>
-                    : <li key={answer.id}>回答 : {answer.owner_name}: {answer.answer_text}</li>
-                  }
-                  <li>
-                    {answer.owner === profile?.id ?
-                      <div>
-                        <EditOutlinedIcon onClick={() => {setAnswerEditId(answer.id); setEditAnswer(answer.answer_text);}}/>
-                        <DeleteIcon onClick={() => deleteAnswer(answer.id)}/>
-                      </div>
-                      : undefined
-                    }
-                  </li>
-                </div>
-                : undefined
-              )}
-            </div>
-          </ul>
+            <Grid key={question.id} item xs={4}>
+              <Paper className={classes.paper} key={question.id}>
+                <div>{question.owner_name}</div>
+                <div>{question.updated_at}</div>
+                <div>{question.question_text}</div>
+              </Paper>
+            </Grid>
           )
         }
-      </div>
-      <h4>投稿</h4>
-      {
-        myQuestions !== undefined ?
-        <div>
-          {myQuestions.map(question=>
-            <ul key={question.id}>
-              {questionEditId === question.id ?
-                <form onSubmit={updateQuestion} key={questionEditId}>
-                  <div>
-                    <input type="text" value={editQuestion} onChange={(e) => setEditQuestion(e.target.value)} />
-                  </div>
-                  <button type="submit">更新</button>
-                </form>
-                :  <li key={question.id}>{question.question_text}</li>
-              }
-              <li><EditOutlinedIcon onClick={() => {setQuestionEditId(question.id); setEditQuestion(question.question_text);}}/></li>
-              <li><DeleteIcon onClick={() => deleteQuestion(question.id)}/></li>
-            </ul>
-          )}
-        </div> : "まだ投稿はありません。"
-      }
-    </div>
+        </Grid>
+      </Grid>
+    </Grid>
   )
 }
 
