@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Question, Answer, AnswerLike
+from .models import Question, Answer, AnswerLike, UserProfile
 from rest_framework.authtoken.models import Token
 
 
@@ -20,8 +20,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['id', 'username', 'email']
+        model = UserProfile
+        fields = ('id', 'owner', 'overview_text',
+                  'gender', 'occupation', 'icon', 'updated_at')
 
 
 class QuestionSerializer(serializers.ModelSerializer):

@@ -10,10 +10,11 @@ class UserProfile(models.Model):
         ('その他', 'Other'),
     )
 
-    Overview_text = models.TextField(max_length=1000, verbose_name='概要')
+    overview_text = models.TextField(max_length=1000, verbose_name='概要')
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     occupation = models.CharField(max_length=100, verbose_name='職業')
     icon = models.ImageField(max_length=100, upload_to='None', blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Question(models.Model):
