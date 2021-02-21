@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'questions.apps.QuestionsConfig',
     'corsheaders',
+    'colorfield'
 ]
 
 MIDDLEWARE = [
