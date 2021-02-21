@@ -1,7 +1,6 @@
-from django.db import models
+from django.db import model
 from colorfield.fields import ColorField
 from django.contrib.auth.models import User
-
 
 class VirtualUser(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
