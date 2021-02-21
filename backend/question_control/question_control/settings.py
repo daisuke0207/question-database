@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'questions.apps.QuestionsConfig',
     'talk.app.TalksConfig',
     'corsheaders',
+    'colorfield'
 ]
 
 MIDDLEWARE = [
